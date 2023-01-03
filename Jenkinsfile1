@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('stage') {
+            steps {
+                sh 'curl -v -u tomcat:tomcat -T target/java-tomcat-maven-example1.war  http://172.31.89.2:8080/manager/text/deploy?path=/app&update=true'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'curl -v -u tomcat:tomcat -T target/java-tomcat-maven-example1.war  http://172.31.91.37:8080/manager/text/deploy?path=/app&update=true'
+            }
+        }
+    }
+}
